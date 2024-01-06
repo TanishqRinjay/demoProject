@@ -104,8 +104,12 @@ exports.countincrease=async(req,res)=>{
             //fetch the details
             const{id}= req.body;
             
-            const response=await fileschema.Update({_id:id},{ $inc: { count: 1 } });
+            const response=await fileschema.updateOne({_id:id},{$inc:{count:1}});
             console.log(response);
+
+            const newcount=new fileschema({
+                count:response.count+1
+            })
 
             return res.status(200).json({
                 message:"count updated sucessffuly",
