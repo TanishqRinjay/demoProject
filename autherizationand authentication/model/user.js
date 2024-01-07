@@ -22,10 +22,7 @@ const signupschema=new mongoose.Schema({
     confirmpassword:{
         type:String,
         required:true
-    },
-    role:{
-        type:String,
-        enum:["admin","user"]
     }
+    
 })
 module.exports=mongoose.model('signup',signupschema)

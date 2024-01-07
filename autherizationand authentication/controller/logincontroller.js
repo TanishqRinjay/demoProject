@@ -14,16 +14,18 @@ exports.logincontroller=async(req,res)=>{
         }
         const playload={
             email:response.email,
-            role:response.role,
             id:response._id
         }
         if(await bcrypt.compare(password,response.password)){
             
-            const token=jwt.sign(playload,process.env.JWT_TOKEN ,{expiresIn:"1h"});
+            const token=jwt.sign(playload,process.env.JWT_TOKEN ,{expiresIn:"7d"});
             console.log(token);
             
             
+        
+
            const olderUser=response.toObject();
+           olderUser.refreshtoken=refreshtoken;
            olderUser.token=token;
            olderUser.password=undefined;
            olderUser.confirmpassword=undefined;

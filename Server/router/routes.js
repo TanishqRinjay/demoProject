@@ -5,7 +5,7 @@ const{countincrease}=require('../controller/File');
 const express=require('express');
 const router=express.Router();
 
-router.post('/localfileupload',Localfileupload);
+// router.post('/localfileupload',Localfileupload);
 router.post('/imageupload',imageupload);
 router.get('/getAllimage',getallfiles);
 router.put('/increasecount',countincrease);

@@ -5,8 +5,8 @@ const Dashboard = () => {
         <div className=" bg-gray-950 w-screen h-[calc(100vh-3.5rem)] flex justify-center items-center text-white ">
             <div className="w-[40%] flex flex-col">
                 <form className="flex gap-4 flex-col">
-                    <div>
-                        <div className="flex flex-col">
+                    <div >
+                        <div className="flex flex-col items-center">
                             <label htmlFor="file">Upload File</label>
                             <input className="text-black w-[40%]" type="file" name="file" id="file" />
                         </div>

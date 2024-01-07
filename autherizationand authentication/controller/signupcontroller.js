@@ -3,7 +3,7 @@ const bcrypt=require("bcrypt")
 exports.signupcontroller= async(req,res)=>{
     try{
         //fetch the data from the req body;
-        const{fname,lname,email,password,confirmpassword,role}=req.body;
+        const{fname,lname,email,password,confirmpassword}=req.body;
         //check user is already exist or not
         const response=await signup.findOne({email:email});
         if(!response){
@@ -27,7 +27,7 @@ exports.signupcontroller= async(req,res)=>{
                 email:email,
                 password:hashpassword,
                 confirmpassword:hashpassword,
-                role:role
+                
             })
             const result=await data.save();
             res.status(200).json({message:"user is created",respnose:result})
