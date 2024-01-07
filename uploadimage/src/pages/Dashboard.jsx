@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import uploadImg from "../assets/Images/uploading.gif";
+import "../components/common/loader.css";
 import { uploadImage } from "../services/operations/imageDetails";
+import { getAllImage } from "../services/operations/imageDetails";
+import Card from "../components/core/Dashboard/Card";
+import { increaseCount } from "../services/operations/imageDetails";
 const Dashboard = () => {
     const {
         register,
@@ -12,21 +15,45 @@ const Dashboard = () => {
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
     const { token } = useSelector((state) => state.auth);
-
-    const onSubmit = async (data) => {
-        const formData = new FormData();
-        formData.append("Imagefile", data.courseTitle);
-        formData.append("name", data.courseShortDesc);
-        formData.append("description", data.coursePrice);
-        formData.append("email", data.courseBenefits);
+    const [allImages, setAllImages] = useState([]);
+    const getImages = async () => {
         setLoading(true);
-        const result = await uploadImage(formData, token);
+        const result = await getAllImage(token);
+        setAllImages(result);
+        console.log(result);
         setLoading(false);
     };
 
+    useEffect(() => {
+        getImages();
+        console.log("All Images: ", allImages);
+    }, []);
+
+    const handleImageUpload = (e) => {
+        console.log("image: ");
+        console.log("image: ", e.target.files[0]);
+    };
+    const onSubmit = async (data) => {
+        const formData = new FormData();
+        formData.append("Imagefile", data.file[0]);
+        formData.append("name", data.Name);
+        formData.append("description", data.description);
+        formData.append("email", data.Email);
+        setLoading(true);
+        const result = await uploadImage(formData, token);
+        console.log(result);
+        setAllImages([...allImages, result]);
+        setLoading(false);
+    };
+    const increaseCounter = async (id) => {
+        const result = await increaseCount(id, token);
+        console.log(result);
+        getImages();
+    }
+
     return (
-        <div className=" bg-gray-950 w-screen min-h-[calc(100vh-3.5rem)] flex justify-center items-center text-white ">
-            <div>
+        <div className=" bg-gray-950 w-screen min-h-[calc(100vh-3.5rem)] text-white ">
+            <div className="w-full min-h-[calc(100vh-3.5rem)] flex justify-center items-center">
                 <div className="w-[40%] flex flex-col">
                     <form
                         onSubmit={handleSubmit(onSubmit)}
@@ -36,11 +63,12 @@ const Dashboard = () => {
                             <div className="flex flex-col">
                                 <label htmlFor="file">Upload File</label>
                                 <input
-                                    className="text-black w-[40%]"
+                                    className="text-white w-[40%]"
                                     type="file"
                                     name="file"
                                     id="file"
                                     placeholder="Upload File"
+                                    onChange={handleImageUpload}
                                     {...register("file", { required: true })}
                                 />
                                 {errors.file && <span>File is required.</span>}
@@ -105,6 +133,23 @@ const Dashboard = () => {
                 </div>
                 <div className="w-[40%]"></div>
             </div>
+            {loading ? (
+                <span className="loader"></span>
+            ) : (
+                <div className="flex h-full w-full justify-around gap-10 flex-wrap">
+                    {allImages.map((image) => (
+                        <Card
+                            image={image.url}
+                            count={image.count}
+                            name={image.name}
+                            description={image.description}
+                            id={image._id}
+                            key={image._id}
+                            increaseCounter={increaseCounter}
+                        ></Card>
+                    ))}
+                </div>
+            )}
         </div>
     );
 };

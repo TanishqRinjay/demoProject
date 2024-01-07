@@ -5,7 +5,6 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { signUp } from "../../../services/operations/auth";
 
-
 function SignupForm() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -39,18 +38,13 @@ function SignupForm() {
             toast.error("Passwords Do Not Match");
             return;
         }
-        const signupData = {
-            ...formData
-        };
         dispatch(
             signUp(
-                accountType,
                 firstName,
                 lastName,
                 email,
                 password,
                 confirmPassword,
-                otp,
                 navigate
             )
         );
@@ -65,13 +59,12 @@ function SignupForm() {
         });
     };
 
-
     return (
         <div>
             {/* Tab */}
             {/* Form */}
             <form
-                onSubmit={/*handleOnSubmit*/ console.log("submitted")}
+                onSubmit={handleOnSubmit}
                 className="flex w-full flex-col gap-y-4"
             >
                 <div className="flex gap-x-4">
@@ -84,7 +77,7 @@ function SignupForm() {
                             type="text"
                             name="firstName"
                             value={firstName}
-                            onChange={/*handleOnChange*/ console.log("changed")}
+                            onChange={handleOnChange}
                             placeholder="Enter first name"
                             style={{
                                 boxShadow:
@@ -102,7 +95,7 @@ function SignupForm() {
                             type="text"
                             name="lastName"
                             value={lastName}
-                        onChange={/*handleOnChange*/ console.log("changed") }
+                            onChange={handleOnChange}
                             placeholder="Enter last name"
                             style={{
                                 boxShadow:
@@ -121,7 +114,7 @@ function SignupForm() {
                         type="text"
                         name="email"
                         value={email}
-                        onChange={/*handleOnChange*/ console.log("changed")}
+                        onChange={handleOnChange}
                         placeholder="Enter email address"
                         style={{
                             boxShadow:
@@ -141,7 +134,7 @@ function SignupForm() {
                             type={showPassword ? "text" : "password"}
                             name="password"
                             value={password}
-                            onChange={/*handleOnChange*/ console.log("changed")}
+                            onChange={handleOnChange}
                             placeholder="Enter Password"
                             style={{
                                 boxShadow:
@@ -173,7 +166,7 @@ function SignupForm() {
                             type={showConfirmPassword ? "text" : "password"}
                             name="confirmPassword"
                             value={confirmPassword}
-                            onChange={/*handleOnChange*/ console.log("changed")}
+                            onChange={handleOnChange}
                             placeholder="Confirm Password"
                             style={{
                                 boxShadow:

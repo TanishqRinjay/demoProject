@@ -14,12 +14,12 @@ exports. Localfileupload=async(req,res)=>{
         })
 
         //sending the response to the user
-        res.status(200).json({
+        return res.status(200).json({
             message:"file uploaded successfully",
         })
     }
     catch(err){
-        res.status(500).json({
+        return res.status(500).json({
             message:"Internal server error",
         })
         console.log(err);
@@ -64,15 +64,16 @@ exports.imageupload=async(req,res)=>{
         })
         const databaseresponse=await filedata.save();
         //send the response to the user
-        res.status(200).json({
+        return res.status(200).json({
             message:"file uploaded successfully",
+            success:true,
             data:databaseresponse,
         })
     }
     catch(err)
     {
         console.log(err);
-        res.status(500).json({
+        return res.status(500).json({
             message:"Internal server error",
             error:err,
 
@@ -85,14 +86,15 @@ exports.getallfiles=async(req,res)=>{
     try{
         const allfiles=await fileschema.find({})
 
-        res.status(200).json({
+        return res.status(200).json({
             message:"All files",
+            success: true,
             data:allfiles,
         })
     }
     catch(err)
     {
-        res.status(500).json({
+        return res.status(500).json({
             message:"Internal server error",
             error:err,
         })
@@ -103,13 +105,14 @@ exports.countincrease=async(req,res)=>{
     try{
             //fetch the details
             const{id}= req.body;
-            
+            console.log(id);
             const response=await fileschema.updateOne({_id:id},{$inc:{count:1}});
             console.log(response);
 
            
             return res.status(200).json({
                 message:"count updated sucessffuly",
+                success:true,
                 data:response
             })
 
@@ -117,7 +120,7 @@ exports.countincrease=async(req,res)=>{
     }
     catch(err)
     {
-        res.status(500).json({
+        return res.status(500).json({
             message:"internal server problem",
             error:err
         })

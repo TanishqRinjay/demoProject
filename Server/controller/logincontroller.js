@@ -23,14 +23,14 @@ exports.logincontroller=async(req,res)=>{
            const olderUser=response.toObject();
            olderUser.token=token;
            olderUser.password=undefined;
-           olderUser.confirmpassword=undefined;
+           olderUser.confirmPassword=undefined;
            console.log(olderUser);
             const option={
                 expiresIn:new Date(Date.now()+3*60*60*1000),
                 httpsOnly:true
             }
 
-            res.cookie("token",token,option).status(200).json({message:"login successfully",token:token,user:olderUser})
+            return res.cookie("token",token,option).status(200).json({message:"login successfully", success: true, token:token,user:olderUser})
         }
         else{
            return res.status(404).json({message:"password is not match"});
@@ -38,6 +38,6 @@ exports.logincontroller=async(req,res)=>{
 
     }
     catch(error){
-        res.status(500).json({message:"internal server error",error:error})
+        return res.status(500).json({message:"internal server error",error:error})
     }
 }

@@ -3,40 +3,40 @@ const bcrypt=require("bcrypt")
 exports.signupcontroller= async(req,res)=>{
     try{
         //fetch the data from the req body;
-        const{fname,lname,email,password,confirmpassword}=req.body;
+        const{firstName,lastName,email,password,confirmPassword}=req.body;
         //check user is already exist or not
         const response=await signup.findOne({email:email});
         if(!response){
             //validate the password and cnf password
-            if(password!=confirmpassword)
+            if(password!==confirmPassword)
             {
-                  res.status(400).json({message:"password and confirm password is not same"})
+                return res.status(400).json({message:"password and confirm password is not same"})
             }
-            let hashpassword;
+            let hashPassword;
             try{
-                hashpassword=await bcrypt.hash(password,10)
+                hashPassword=await bcrypt.hash(password,10)
             }
             catch(error)
             {
-                res.status(500).json({message:"problem in hashing the password",error:error})
+                return res.status(500).json({message:"problem in hashing the password",error:error})
             }
             //create the entry in the databse
             const data= new signup({
-                fname:fname,
-                lname:lname,
+                firstName:firstName,
+                lastName:lastName,
                 email:email,
-                password:hashpassword,
-                confirmpassword:hashpassword,
+                password:hashPassword,
+                confirmPassword:hashPassword,
                 
             })
             const result=await data.save();
-            res.status(200).json({message:"user is created",respnose:result})
+            return res.status(200).json({message:"user is created", success:true})
         }
         else{
-            res.status(400).json({message:"user is already exist"})
+            return res.status(400).json({message:"user is already exist"})
         }
     }
     catch(error){
-        res.status(500).json({message:"internal server error",error:error})
+        return res.status(500).json({message:"internal server error",error:error})
     }
 }

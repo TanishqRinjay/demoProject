@@ -6,7 +6,7 @@ import { Navigate } from "react-router-dom";
 const OpenRoute = ({ children }) => {
     const { token } = useSelector((state) => state.auth);
 
-    return !token ? children : <Navigate to="/dashboard/my-profile" />;
+    return !token ? children : <Navigate to="/dashboard" />;
 };
 
 export default OpenRoute;
