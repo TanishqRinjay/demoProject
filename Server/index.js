@@ -2,6 +2,7 @@ const express=require('express');
 const {conectDB}=require('./config/database');
 const {cloudinaryConfig}=require('./config/cloudinary');
 const fileUpload=require('express-fileupload');
+
 const app=express();
 require("dotenv").config();
 const port=process.env.port || 5000;
@@ -20,11 +21,14 @@ app.use(fileUpload({
 
 //routes mounting
 const fileRoutes=require('./router/routes');
+const routes=require('./router/router');
+app.use('/api/v1',routes);
 app.use('/api/v1',fileRoutes);
 
-//connection with database
+//connection with file database
 conectDB();
 
 //cloudinary configuration
 cloudinaryConfig();
 
+//authDatabase
