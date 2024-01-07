@@ -3,21 +3,69 @@ import { toast } from "react-hot-toast";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { signUp } from "../../../services/operations/auth";
 
-// import { sendOtp } from "../../../services/operations/authAPI";
-// import { setSignupData } from "../../../slices/authSlice";
-// import { ACCOUNT_TYPE } from "../../../utils/constants";
-// import Tab from "../../common/Tab";
 
 function SignupForm() {
-    const firstName = "admin"
-    const lastName = "ssfad"
-    const email = "admin@ssfad.com"
-    const password = "123"
-    
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const [formData, setFormData] = useState({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+    });
+
     const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setConfirmPassword] = useState(false);
-    const [confirmPassword, setShowConfirmPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    const { firstName, lastName, email, password, confirmPassword } = formData;
+
+    // Handle input fields, when some value changes
+    const handleOnChange = (e) => {
+        setFormData((prevData) => ({
+            ...prevData,
+            [e.target.name]: e.target.value,
+        }));
+    };
+
+    // Handle Form Submission
+    const handleOnSubmit = (e) => {
+        e.preventDefault();
+
+        if (password !== confirmPassword) {
+            toast.error("Passwords Do Not Match");
+            return;
+        }
+        const signupData = {
+            ...formData
+        };
+        dispatch(
+            signUp(
+                accountType,
+                firstName,
+                lastName,
+                email,
+                password,
+                confirmPassword,
+                otp,
+                navigate
+            )
+        );
+
+        // Reset
+        setFormData({
+            firstName: "",
+            lastName: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+        });
+    };
+
+
     return (
         <div>
             {/* Tab */}

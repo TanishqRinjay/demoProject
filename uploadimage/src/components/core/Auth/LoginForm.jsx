@@ -1,41 +1,40 @@
 import { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-// import { useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-
-// import { login } from "../../../services/operations/authAPI";
+import { login } from "../../../services/operations/auth";
 
 function LoginForm() {
-    // const navigate = useNavigate();
-    // const dispatch = useDispatch();
-    // const [formData, setFormData] = useState({
-    //     email: "",
-    //     password: "",
-    // });
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const [formData, setFormData] = useState({
+        email: "",
+        password: "",
+    });
 
     const [showPassword, setShowPassword] = useState(false);
 
-    // const { email, password } = formData;
+    const { email, password } = formData;
 
-    // const handleOnChange = (e) => {
-    //     setFormData((prevData) => ({
-    //         ...prevData,
-    //         [e.target.name]: e.target.value,
-    //     }));
-    // };
+    const handleOnChange = (e) => {
+        setFormData((prevData) => ({
+            ...prevData,
+            [e.target.name]: e.target.value,
+        }));
+    };
 
-    // const handleOnSubmit = (e) => {
-    //     e.preventDefault();
-    //     dispatch(login(email, password, navigate));
-    // };
+    const handleOnSubmit = (e) => {
+        e.preventDefault();
+        dispatch(login(email, password, navigate));
+    };
     
     //TO DELETE
-    const email = "tanishq@gmail.com"
-    const password = "12345"
+    // const email = "tanishq@gmail.com"
+    // const password = "12345"
 
     return (
         <form
-            onSubmit={()=>{/*handleSubmit*/console.log("submitted")}}
+            onSubmit={handleOnSubmit}
             className="mt-6 flex w-full flex-col gap-y-4"
         >
             <label className="w-full">
@@ -47,7 +46,7 @@ function LoginForm() {
                     type="text"
                     name="email"
                     value={email}
-                    onChange={/*handleOnChange*/ ()=>{console.log("changed")}}
+                    onChange={handleOnChange}
                     placeholder="Enter email address"
                     style={{
                         boxShadow:
@@ -65,13 +64,13 @@ function LoginForm() {
                     type={showPassword ? "text" : "password"}
                     name="password"
                     value={password}
-                    onChange={/*handleOnChange*/ ()=>{console.log("changed")}}
+                    onChange={handleOnChange}
                     placeholder="Enter Password"
                     style={{
                         boxShadow:
                             "inset 0px -1px 0px rgba(255, 255, 255, 0.18)",
                     }}
-                    className="w-full rounded-[0.5rem] bg-richblack-800 p-[12px] pr-12 text-gray-100"
+                    className="w-full rounded-[0.5rem] bg-richblack-800 p-[12px] pr-12 text-black"
                 />
                 <span
                     onClick={() => setShowPassword((prev) => !prev)}
